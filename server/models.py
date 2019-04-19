@@ -12,6 +12,8 @@ class TempModel(models.Model):
     )
 
     def __str__(self):
+        if self.room is None:
+            return "Null, " + str(self.temp)
         return self.room.name + ", " + str(self.temp)
 
 
