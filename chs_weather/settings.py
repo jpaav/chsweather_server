@@ -35,7 +35,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
     'gunicorn',
 
     'rest_framework',
@@ -56,6 +55,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'chs_weather.urls'
+
+SITE_ID = 1
 
 TEMPLATES = [
     {
