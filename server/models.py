@@ -2,6 +2,8 @@ from django.db import models
 
 
 class TempModel(models.Model):
+    objects = models.Manager()
+
     temp = models.FloatField()
     datetime_stamp = models.DateTimeField()
     room = models.ForeignKey(
@@ -18,6 +20,8 @@ class TempModel(models.Model):
 
 
 class RoomModel(models.Model):
+    objects = models.Manager()
+
     temps = models.ForeignKey(
         'TempModel',
         null=True,
@@ -29,4 +33,9 @@ class RoomModel(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_first_temp(self):
+        if self.temps is None:
+            return None
+        return TempModel.objects.filter(room=self).first()
 

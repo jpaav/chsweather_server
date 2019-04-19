@@ -6,16 +6,16 @@ from .models import *
 
 
 class TempSerializer(serializers.ModelSerializer):
-    temp = serializers.FloatField(source='temp')
+    temp = serializers.FloatField()
     room_name = serializers.CharField(source='room.name')
-    datetime_stamp = serializers.DateTimeField(source='datetime_stamp')
+    datetime_stamp = serializers.DateTimeField()
 
     class Meta:
         model = TempModel
         fields = (
             'pk',
             'temp',
-            'room',
+            'room_name',
             'datetime_stamp',
         )
         read_only_fields = (
@@ -23,16 +23,34 @@ class TempSerializer(serializers.ModelSerializer):
         )
 
 
-class RoomSerializer(serializers.ModelSerializer):
+class RoomDetailSerializer(serializers.ModelSerializer):
     temps = TempSerializer(many=True)
     name = serializers.CharField()
     department = serializers.CharField()
 
     class Meta:
-        model = TempModel
+        model = RoomModel
         fields = (
             'pk',
             'temps',
+            'name',
+            'department'
+        )
+        read_only_fields = (
+            'pk',
+        )
+
+
+class RoomSerializer(serializers.ModelSerializer):
+    temp = TempSerializer(source='get_first_temp')
+    name = serializers.CharField()
+    department = serializers.CharField()
+
+    class Meta:
+        model = RoomModel
+        fields = (
+            'pk',
+            'temp',
             'name',
             'department'
         )
