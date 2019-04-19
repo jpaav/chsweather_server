@@ -11,6 +11,9 @@ class TempModel(models.Model):
         on_delete=models.CASCADE
     )
 
+    def __str__(self):
+        return self.room.name + ", " + str(self.temp)
+
 
 class RoomModel(models.Model):
     temps = models.ForeignKey(
@@ -21,4 +24,7 @@ class RoomModel(models.Model):
     )
     name = models.CharField(max_length=100, null=True, blank=True)
     department = models.CharField(max_length=100, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
 
