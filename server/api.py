@@ -17,15 +17,21 @@ class TempView(generics.RetrieveAPIView):
 
 
 class TempCreateView(generics.CreateAPIView):
-    authentication_classes = (authentication.TokenAuthentication,)
-    permission_classes = (permissions.IsAuthenticated,)
-    # authentication_classes = ()
-    # permission_classes = ()
+    # authentication_classes = (authentication.TokenAuthentication, authentication.BasicAuthentication,)
+    # permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = ()
+    permission_classes = ()
 
     serializer_class = TempSerializer
 
     def perform_create(self, serializer):
-        temperature = serializer.save()
+        if serializer.is_valid():
+            try:
+                room = RoomModel.objects.get(pk=serializer.validated_data['room']['pk'])
+                temp = serializer.save(room=room)
+                room.temps_set.add(temp)
+            except:
+                print("There is no room with that id")
 
 
 class RoomView(generics.RetrieveAPIView):

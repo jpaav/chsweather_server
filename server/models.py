@@ -26,7 +26,8 @@ class RoomModel(models.Model):
         'TempModel',
         null=True,
         blank=True,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='temps_set'
     )
     name = models.CharField(max_length=100, null=True, blank=True)
     department = models.CharField(max_length=100, null=True, blank=True)
