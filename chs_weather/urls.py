@@ -24,6 +24,7 @@ from server.api import *
 urlpatterns = [
     path('rest/login/', auth_views.obtain_auth_token, name='login'),
     path('rest/temp/<int:temp_id>/', TempView.as_view(), name='temp'),
+    path('rest/temp/create/', TempCreateView.as_view(), name='create-temp'),
     path('rest/room/<int:room_id>/', RoomView.as_view(), name='room'),
     path('rest/rooms/', RoomListView.as_view(), name='room-list'),
     path('admin/', admin.site.urls),

@@ -8,6 +8,7 @@ from .models import *
 class TempSerializer(serializers.ModelSerializer):
     temp = serializers.FloatField()
     room_name = serializers.CharField(source='room.name')
+    room_pk = serializers.IntegerField(source='room.pk')
     datetime_stamp = serializers.DateTimeField()
 
     class Meta:
@@ -16,6 +17,7 @@ class TempSerializer(serializers.ModelSerializer):
             'pk',
             'temp',
             'room_name',
+            'room_pk',
             'datetime_stamp',
         )
         read_only_fields = (

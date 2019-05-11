@@ -37,5 +37,5 @@ class RoomModel(models.Model):
     def get_first_temp(self):
         if self.temps is None:
             return None
-        return TempModel.objects.filter(room=self).first()
+        return TempModel.objects.filter(room=self).order_by('datetime_stamp').first()
 
