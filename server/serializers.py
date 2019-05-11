@@ -1,13 +1,12 @@
-
-from django.contrib.auth.models import User
 from rest_framework import serializers
+from rest_framework.response import Response
 
 from .models import *
 
 
 class TempSerializer(serializers.ModelSerializer):
     temp = serializers.FloatField()
-    room_name = serializers.CharField(source='room.name')
+    room_name = serializers.CharField(source='room.name', read_only=True)
     room_pk = serializers.IntegerField(source='room.pk')
     datetime_stamp = serializers.DateTimeField()
 
@@ -22,13 +21,19 @@ class TempSerializer(serializers.ModelSerializer):
         )
         read_only_fields = (
             'pk',
+            'room_name',
         )
 
 
 class RoomDetailSerializer(serializers.ModelSerializer):
-    temps = TempSerializer(many=True)
+    temps = serializers.SerializerMethodField(read_only=True)
     name = serializers.CharField()
     department = serializers.CharField()
+
+    def get_temps(self, obj):
+        model_temps = list(TempModel.objects.filter(room=obj))
+        serializer = TempSerializer(model_temps, many=True)
+        return serializer.data
 
     class Meta:
         model = RoomModel
